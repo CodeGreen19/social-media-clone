@@ -7,8 +7,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema, SignupSchemaShape, SignupSchemaType } from "../schema";
 import { CustomFormField } from "@/components/shared-form/custom-form-filed";
 import { Button } from "@/components/ui/button";
+import { authMutations } from "../mutations";
+import { useRouter } from "next/navigation";
 
 export default function SignUpForm() {
+  const router = useRouter();
+  const { mutate, isPending } = authMutations.signup();
   const form = useForm<SignupSchemaType>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -18,7 +22,18 @@ export default function SignUpForm() {
     },
   });
   return (
-    <CustomFormWrapper<SignupSchemaShape> form={form} onSubmit={(val) => {}}>
+    <CustomFormWrapper<SignupSchemaShape>
+      form={form}
+      onSubmit={(input) =>
+        mutate(input, {
+          onSuccess: (data) => {
+            if (data) {
+              router.push("/");
+            }
+          },
+        })
+      }
+    >
       <CustomFormField<SignupSchemaShape>
         form={form}
         input="text"
@@ -41,7 +56,7 @@ export default function SignUpForm() {
         required
       />
 
-      <Button className="w-full">Submit</Button>
+      <Button disabled={isPending}>Submit</Button>
     </CustomFormWrapper>
   );
 }

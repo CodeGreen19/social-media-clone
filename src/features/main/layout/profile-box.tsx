@@ -10,7 +10,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import UserAvater from "@/components/user-avater";
+import { authClient } from "@/lib/auth-client";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 function ProfileAvaterSheet() {
   return (
@@ -48,8 +51,22 @@ function ProfileBoxOptions() {
 }
 
 function SignOutBox() {
+  const router = useRouter();
+  const { isPending, mutate } = useMutation({
+    mutationFn: async () => {
+      const res = await authClient.signOut();
+      if (res.data) {
+        router.push("/sign-in");
+      }
+    },
+  });
   return (
-    <Button variant={"outline"} className="text-red-500 w-full">
+    <Button
+      disabled={isPending}
+      onClick={() => mutate()}
+      variant={"outline"}
+      className="text-red-500 w-full"
+    >
       Sign Out
     </Button>
   );
