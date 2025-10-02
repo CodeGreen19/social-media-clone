@@ -13,7 +13,7 @@ export default function AuthLayout({ children }: ChildrenProp) {
       <div>
         <Logo className="size-10" />
       </div>
-      <div className="space-x-1">
+      <div className="">
         <Link href={"/sign-in"}>
           <Button variant={pathname === "/sign-in" ? "default" : "outline"}>
             Sign In

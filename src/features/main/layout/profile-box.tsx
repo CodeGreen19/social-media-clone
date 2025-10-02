@@ -10,6 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import UserAvater from "@/components/user-avater";
+import Link from "next/link";
 
 function ProfileAvaterSheet() {
   return (
@@ -32,8 +33,12 @@ function ProfileBoxOptions() {
   return (
     <Command>
       <CommandGroup className="p-0 rounded-none py-2">
-        <CommandItem>Accounts</CommandItem>
-        <CommandItem>Profile</CommandItem>
+        <Link href={"/account"}>
+          <CommandItem>Accounts</CommandItem>
+        </Link>
+        <Link href={"/profile"}>
+          <CommandItem>Profile</CommandItem>
+        </Link>
         <CommandItem className="p-0">
           <Button className="w-full">Create Post</Button>
         </CommandItem>

@@ -4,7 +4,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -50,7 +49,6 @@ export function CustomFormField<T extends ZodRawShape>({
   input,
   required,
   selectData,
-  title,
 }: FormFieldType<T>) {
   const placeHolder = `${unsetteledPlaceholder} ${required ? "*" : ""}`;
   return (

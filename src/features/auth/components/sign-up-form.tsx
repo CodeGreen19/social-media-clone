@@ -40,9 +40,8 @@ export default function SignUpForm() {
         placeHolder="Password"
         required
       />
-      <div className="flex justify-end">
-        <Button className="">Submit</Button>
-      </div>
+
+      <Button className="w-full">Submit</Button>
     </CustomFormWrapper>
   );
 }

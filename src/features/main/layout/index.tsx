@@ -7,19 +7,19 @@ import RightSection from "./right-section";
 
 export default function MainLayout({ children }: ChildrenProp) {
   return (
-    <div className="h-dvh overflow-y-auto">
+    <div className="h-dvh overflow-y-scroll">
       <Navbar />
       <div className="lg:hidden">
         <div className="p-4">{children}</div>
       </div>
 
       <div className=" max-w-7xl lg:grid grid-cols-[1fr_2fr_1fr] m-auto">
-        <section className="border-l border-b p-4 sticky self-start top-16 h-fit">
+        <section className="border-l lg:block hidden border-b p-4 sticky self-start top-16 h-fit">
           <ProfileBoxOptions />
           <SignOutBox />
         </section>
-        <section className="border-x p-4">{children}</section>
-        <section className="border-r border-b p-4 sticky self-start top-16">
+        <section className="border-x border-b p-4">{children}</section>
+        <section className="border-r lg:block hidden border-b p-4 sticky self-start top-16">
           <RightSection />
         </section>
       </div>

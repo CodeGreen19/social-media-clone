@@ -16,7 +16,7 @@ export default function SignInForm() {
     },
   });
   return (
-    <CustomFormWrapper<SigninSchemaShape> form={form} onSubmit={(val) => {}}>
+    <CustomFormWrapper<SigninSchemaShape> form={form} onSubmit={() => {}}>
       <CustomFormField<SigninSchemaShape>
         form={form}
         input="email"
@@ -31,9 +31,8 @@ export default function SignInForm() {
         placeHolder="Password"
         required
       />
-      <div className="flex justify-end">
-        <Button className="">Submit</Button>
-      </div>
+
+      <Button className="w-full">Submit</Button>
     </CustomFormWrapper>
   );
 }
