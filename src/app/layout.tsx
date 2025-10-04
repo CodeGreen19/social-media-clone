@@ -37,11 +37,7 @@ export default function RootLayout({
           enableSystem
         >
           <QueryProvider>{children}</QueryProvider>
-          <Toaster
-            toastOptions={{
-              style: { borderRadius: 0 },
-            }}
-          />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
