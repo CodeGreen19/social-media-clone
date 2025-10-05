@@ -1,39 +1,53 @@
 "use client";
+
+import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
-import React from "react";
+import ProfileButton from "./_components/profile-button";
+import { useMutation } from "@tanstack/react-query";
 
-export default function Home() {
-  const { data, isPending, error } = authClient.useSession();
+export default function page() {
+  const { data, isPending } = authClient.useSession();
 
-  if (isPending) {
-    return "pending...";
-  }
-  if (error) {
-    return "error occurs";
-  }
+  const { mutate, isPending: logoutPending } = useMutation({
+    mutationFn: () => authClient.signOut(),
+  });
   return (
-    <div className="gap-6 mt-6 flex flex-col items-center">
-      <h1 className="text-2xl font-bold text-center">
-        Complete Auth Using Better-Auth
+    <div>
+      <div className="border-b">
+        <nav className="h-20 border-b flex items-center justify-between px-6 lg:px-0 max-w-2xl m-auto">
+          <Logo className="size-10" />
+          {isPending ? (
+            <Skeleton className="h-10 w-20" />
+          ) : (
+            <div>
+              {data ? (
+                <Button
+                  variant={"destructive"}
+                  disabled={logoutPending}
+                  onClick={() => mutate()}
+                >
+                  Logout
+                </Button>
+              ) : (
+                <div>
+                  <Link href={"/sign-in"}>
+                    <Button>Sign in</Button>
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
+        </nav>
+      </div>
+      <h1 className="text-2xl font-bold text-center mt-6">
+        Complete Better Auth Demo
       </h1>
-      {data ? (
-        <div className="space-x-2">
-          <Link href={"/profile"}>
-            <Button variant={"default"}>Profile</Button>
-          </Link>
-          <Link href={"/auth/signin"}>
-            <Button variant={"destructive"}>Logout</Button>
-          </Link>
-        </div>
-      ) : (
-        <div>
-          <Link href={"/auth/signin"}>
-            <Button>Sign In</Button>
-          </Link>
-        </div>
-      )}
+      <div className="flex items-center justify-center mt-6">
+        <ProfileButton />
+      </div>
     </div>
   );
 }
