@@ -1,6 +1,11 @@
-import SignUpPage from "@/features/auth/pages/sign-up-page";
 import React from "react";
+import AuthCardWrapper from "../_components/auth-card-wrapper";
+import SignupForm from "../_components/signup-form";
 
 export default function page() {
-  return <SignUpPage />;
+  return (
+    <AuthCardWrapper title="Sign up">
+      <SignupForm />
+    </AuthCardWrapper>
+  );
 }
