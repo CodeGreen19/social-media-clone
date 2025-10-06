@@ -5,26 +5,26 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import {
   AccountSectionTriggers,
-  ActionButtons,
-  SectionActionWrapper,
-} from "./section-action-wrapper";
+  SectionActionButtons,
+  SectionLayoutWrapper,
+} from "./section-layout-wrapper";
 
-export default function SectionPreferance() {
+export default function TabPreference() {
   return (
-    <SectionActionWrapper
+    <SectionLayoutWrapper
       heading="Preference"
       sections={[
         {
           title: "Themes",
-          TriggerComponent: SectionThemeUpdateTrigger,
-          FormComponent: SectionThemeUpdateForm,
+          TriggerComponent: ChangeThemeForm,
+          FormComponent: ChangeThemeFormTrigger,
         },
       ]}
     />
   );
 }
 
-function SectionThemeUpdateForm({ onClose }: AccountSectionTriggers) {
+function ChangeThemeForm({ onClose }: AccountSectionTriggers) {
   const { theme, setTheme } = useTheme();
   const [selectedTheme, setSelectedTheme] = useState(theme ?? "system");
 
@@ -36,9 +36,7 @@ function SectionThemeUpdateForm({ onClose }: AccountSectionTriggers) {
   const handleSubmit = async () => {
     setTheme(selectedTheme);
   };
-
   const isPending = false;
-
   return (
     <div className="space-y-4">
       <div className="space-y-3">
@@ -63,7 +61,7 @@ function SectionThemeUpdateForm({ onClose }: AccountSectionTriggers) {
         </RadioGroup>
       </div>
 
-      <ActionButtons
+      <SectionActionButtons
         isPending={isPending}
         onClose={onClose}
         buttonText="Save"
@@ -74,7 +72,7 @@ function SectionThemeUpdateForm({ onClose }: AccountSectionTriggers) {
   );
 }
 
-function SectionThemeUpdateTrigger({ onOpen }: AccountSectionTriggers) {
+function ChangeThemeFormTrigger({ onOpen }: AccountSectionTriggers) {
   const { theme } = useTheme();
 
   const themeLabel = `${theme?.charAt(0).toUpperCase()}${theme?.slice(1)}`;
@@ -91,5 +89,3 @@ function SectionThemeUpdateTrigger({ onOpen }: AccountSectionTriggers) {
     </div>
   );
 }
-
-export { SectionThemeUpdateForm, SectionThemeUpdateTrigger };

@@ -1,9 +1,17 @@
 import { Button } from "@/components/ui/button";
+import { auth } from "@/lib/auth";
 import { ChevronLeft } from "lucide-react";
+import { headers } from "next/headers";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import React from "react";
 
-export default function layout({ children }: LayoutProps<"/">) {
+export default async function layout({ children }: LayoutProps<"/">) {
+  const res = await auth.api.getSession({ headers: await headers() });
+
+  if (res?.session) {
+    redirect("/");
+  }
   return (
     <div>
       <div className="border-b">

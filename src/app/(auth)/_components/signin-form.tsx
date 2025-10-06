@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
-import SocialIconSection from "./social-login-section";
+import SocialLoginButtons from "./social-login-buttons";
 
 const signinSchema = z.object({
   email: z.email(),
@@ -40,6 +40,11 @@ export default function SigninForm() {
       router.push("/");
     }
     if (result.error) {
+      if (result.error.status === 403) {
+        form.reset();
+        return toast.success("We have sent a verification email");
+      }
+      form.reset();
       toast.error(result.error.message ?? "Error Occures");
     }
   };
@@ -47,7 +52,7 @@ export default function SigninForm() {
   const isPending = form.formState.isSubmitting;
   return (
     <div>
-      <SocialIconSection />
+      <SocialLoginButtons />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           <FormField
@@ -70,7 +75,17 @@ export default function SigninForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <div className="flex items-center justify-between ">
+                  <FormLabel>Password</FormLabel>
+                  <h3 className="text-sm">
+                    <Link
+                      href={"/forgot-password"}
+                      className="text-muted-foreground "
+                    >
+                      Forgot your password ?
+                    </Link>
+                  </h3>
+                </div>
                 <Input placeholder="******" {...field} type="text" />
                 <FormMessage />
               </FormItem>

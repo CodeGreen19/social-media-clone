@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import React, { Fragment, useState } from "react";
 
-export type AccountSectionTriggers = {
+type AccountSectionTriggers = {
   onOpen?: () => void;
   onClose?: () => void;
 };
@@ -21,7 +21,7 @@ type SectionInfoType = {
   sections: SectionComponentType[];
 };
 
-function SectionActionWrapper({ heading, sections }: SectionInfoType) {
+function SectionLayoutWrapper({ heading, sections }: SectionInfoType) {
   return (
     <div className="space-y-4">
       <h1 className="font-medium">{heading}</h1>
@@ -63,7 +63,7 @@ function ClickExpandActionBox({
   );
 }
 
-function ActionButtons({
+function SectionActionButtons({
   onClose,
   buttonText,
   buttonSubmit,
@@ -88,4 +88,8 @@ function ActionButtons({
   );
 }
 
-export { SectionActionWrapper, ActionButtons };
+export {
+  SectionActionButtons,
+  SectionLayoutWrapper,
+  type AccountSectionTriggers,
+};
