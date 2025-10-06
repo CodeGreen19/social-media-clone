@@ -1,11 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { LucideIcon, Shield, Thermometer, User } from "lucide-react";
+import { LucideIcon, Palette, Shield, User } from "lucide-react";
 import { useState } from "react";
-import SectionPreferance from "./section-preferance";
-import SectionProfile from "./section-profile";
-import SectionSecurity from "./section-security";
+import TabPrefrence from "./tab-preference";
+import TabProfile from "./tab-profile";
+import TabSecurity from "./tab-security";
 
 type TabType = "Profile" | "Security" | "Preferance";
 type AccountManageListType = {
@@ -22,12 +22,12 @@ const manageLists: AccountManageListType[] = [
     text: "Security",
   },
   {
-    Icon: Thermometer,
+    Icon: Palette,
     text: "Preferance",
   },
 ];
 
-export default function ManageProfile() {
+export default function UserManagement() {
   const [tab, setTab] = useState<TabType>("Profile");
   return (
     <div className="flex flex-col md:flex-row">
@@ -55,12 +55,12 @@ export default function ManageProfile() {
       </section>
       <section className="bg-background grow rounded-lg p-6">
         {tab === "Profile" ? (
-          <SectionProfile />
+          <TabProfile />
         ) : tab === "Security" ? (
-          <SectionSecurity />
-        ) : (
-          <SectionPreferance />
-        )}
+          <TabSecurity />
+        ) : tab === "Preferance" ? (
+          <TabPrefrence />
+        ) : null}
       </section>
     </div>
   );

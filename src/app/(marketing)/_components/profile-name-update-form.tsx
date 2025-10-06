@@ -10,16 +10,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import {
   AccountSectionTriggers,
-  ActionButtons,
-} from "./section-action-wrapper";
-import { useRouter } from "next/navigation";
+  SectionActionButtons,
+} from "./section-layout-wrapper";
 
-function SectionProfileUpdateForm(triggers: AccountSectionTriggers) {
+function ProfileNameUpdateForm(triggers: AccountSectionTriggers) {
   return (
     <div className="space-y-3">
       <section className="flex items-center justify-start gap-3">
@@ -92,7 +92,7 @@ function UpdateForm({ triggers }: { triggers: AccountSectionTriggers }) {
               </FormItem>
             )}
           />
-          <ActionButtons
+          <SectionActionButtons
             isPending={isPending}
             onClose={triggers.onClose}
             buttonText="Save"
@@ -104,7 +104,7 @@ function UpdateForm({ triggers }: { triggers: AccountSectionTriggers }) {
   );
 }
 
-function SectionProfileUpdateTrigger({ onOpen }: AccountSectionTriggers) {
+function ProfileNameUpdateTrigger({ onOpen }: AccountSectionTriggers) {
   const { data } = authClient.useSession();
   return (
     <div className="flex items-center justify-between">
@@ -122,4 +122,4 @@ function SectionProfileUpdateTrigger({ onOpen }: AccountSectionTriggers) {
   );
 }
 
-export { SectionProfileUpdateForm, SectionProfileUpdateTrigger };
+export { ProfileNameUpdateForm, ProfileNameUpdateTrigger };

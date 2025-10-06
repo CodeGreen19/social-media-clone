@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { Separator } from "@/components/ui/separator";
 
-export default function SocialIconSection() {
+export default function SocialLoginButtons() {
   return (
     <div className="space-y-3 mb-5">
       <div className="grid grid-cols-2 gap-1.5">

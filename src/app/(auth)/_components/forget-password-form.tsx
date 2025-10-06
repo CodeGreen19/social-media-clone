@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Form,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -12,34 +13,37 @@ import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
-import SocialLoginButtons from "./social-login-buttons";
 
-const signupSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+const forgetPasswordSchema = z.object({
   email: z.email(),
-  password: z.string().min(6, "Password must be 6 or more character").max(100),
 });
-type SignupSchemaType = z.infer<typeof signupSchema>;
+type ForgetPasswordSchemaType = z.infer<typeof forgetPasswordSchema>;
 
-export default function SignupForm() {
-  const router = useRouter();
-  const form = useForm<SignupSchemaType>({
-    resolver: zodResolver(signupSchema),
+export default function ForgetPasswordForm() {
+  const form = useForm<ForgetPasswordSchemaType>({
+    resolver: zodResolver(forgetPasswordSchema),
     defaultValues: {
       email: "",
-      name: "",
-      password: "",
     },
   });
 
-  const handleSubmit = async (val: SignupSchemaType) => {
-    const result = await authClient.signUp.email(val);
-    if (result.data) {
-      toast.success("A verfication email has sent to your email");
+  const handleSubmit = async (val: ForgetPasswordSchemaType) => {
+    const result = await authClient.forgetPassword({
+      email: val.email,
+      redirectTo: "/reset-password",
+    });
+    console.log(result);
+
+    if (result.data?.status) {
+      const info = result.data as { status: boolean; message?: string };
+
+      toast.info(
+        info.message || "A email varification link has sent to your email"
+      );
+
       form.reset();
     }
     if (result.error) {
@@ -50,28 +54,19 @@ export default function SignupForm() {
   const isPending = form.formState.isSubmitting;
   return (
     <div>
-      <SocialLoginButtons />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <Input placeholder="eg: Ahemd dev" {...field} type="text" />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
+                <FormDescription>
+                  Enter you email address to get password reset link.
+                </FormDescription>
                 <Input
-                  placeholder="eg: email@gmail.com"
+                  placeholder="eg:email@gmail.com"
                   {...field}
                   type="text"
                 />
@@ -79,17 +74,7 @@ export default function SignupForm() {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <Input placeholder="******" {...field} type="text" />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+
           <Button className="w-full" disabled={isPending}>
             Submit
           </Button>
@@ -97,7 +82,7 @@ export default function SignupForm() {
       </Form>
       <div className="my-3 text-sm text-muted-foreground">
         <h1>
-          Already have a account?{" "}
+          Back to{" "}
           <Link href={"/sign-in"} className="text-blue-500">
             Sign in
           </Link>

@@ -17,8 +17,8 @@ import z from "zod";
 import { authClient } from "@/lib/auth-client";
 import {
   AccountSectionTriggers,
-  ActionButtons,
-} from "./section-action-wrapper";
+  SectionActionButtons,
+} from "./section-layout-wrapper";
 import { useRouter } from "next/navigation";
 
 //
@@ -42,7 +42,7 @@ type PasswordSchemaType = z.infer<typeof passwordSchema>;
 //
 // 🔧 Form Section
 //
-function SectionPasswordUpdateForm({ onClose }: AccountSectionTriggers) {
+function SecurityUPdatePasswordForm({ onClose }: AccountSectionTriggers) {
   const router = useRouter();
   const form = useForm<PasswordSchemaType>({
     resolver: zodResolver(passwordSchema),
@@ -66,9 +66,6 @@ function SectionPasswordUpdateForm({ onClose }: AccountSectionTriggers) {
 
       if (result.data) {
         toast.success("Password updated successfully");
-        if (values.logoutAll) {
-          toast.info("Logged out from all other devices");
-        }
         router.refresh();
       }
 
@@ -132,7 +129,7 @@ function SectionPasswordUpdateForm({ onClose }: AccountSectionTriggers) {
             )}
           />
 
-          <ActionButtons
+          <SectionActionButtons
             isPending={isPending}
             onClose={onClose}
             buttonText="Update Password"
@@ -147,7 +144,7 @@ function SectionPasswordUpdateForm({ onClose }: AccountSectionTriggers) {
 //
 // 🧩 Trigger Section
 //
-function SectionPasswordUpdateTrigger({ onOpen }: AccountSectionTriggers) {
+function SecurityUPdatePasswordFormTrigger({ onOpen }: AccountSectionTriggers) {
   return (
     <div className="flex items-center justify-between">
       <div>
@@ -162,4 +159,4 @@ function SectionPasswordUpdateTrigger({ onOpen }: AccountSectionTriggers) {
   );
 }
 
-export { SectionPasswordUpdateForm, SectionPasswordUpdateTrigger };
+export { SecurityUPdatePasswordForm, SecurityUPdatePasswordFormTrigger };

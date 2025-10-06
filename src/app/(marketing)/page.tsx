@@ -4,16 +4,32 @@ import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { authClient } from "@/lib/auth-client";
-import Link from "next/link";
-import ProfileButton from "./_components/profile-button";
 import { useMutation } from "@tanstack/react-query";
+import Link from "next/link";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { useRouter, useSearchParams } from "next/navigation";
+import UserButton from "./_components/user-button";
 
 export default function page() {
+  const router = useRouter();
   const { data, isPending } = authClient.useSession();
+  const searchParam = useSearchParams();
+  const isTokenVerficationError =
+    searchParam.get("error") === "token_expired" ||
+    searchParam.get("error") === "invalid_token";
 
   const { mutate, isPending: logoutPending } = useMutation({
     mutationFn: () => authClient.signOut(),
   });
+  useEffect(() => {
+    if (isTokenVerficationError) {
+      setTimeout(() => {
+        toast.error("Your email verification token is expired or invalid");
+        router.push("/");
+      }, 0);
+    }
+  }, [isTokenVerficationError, router]);
   return (
     <div>
       <div className="border-b">
@@ -46,7 +62,7 @@ export default function page() {
         Complete Better Auth Demo
       </h1>
       <div className="flex items-center justify-center mt-6">
-        <ProfileButton />
+        <UserButton />
       </div>
     </div>
   );
