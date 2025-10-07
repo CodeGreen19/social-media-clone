@@ -4,6 +4,7 @@ import {
   SecurityUPdatePasswordForm,
   SecurityUPdatePasswordFormTrigger,
 } from "./security-update-password-form";
+import { SecurityActiveDevices } from "./security-active-devices";
 
 export default function TabSecurity() {
   return (
@@ -14,6 +15,10 @@ export default function TabSecurity() {
           title: "Update password",
           FormComponent: SecurityUPdatePasswordForm,
           TriggerComponent: SecurityUPdatePasswordFormTrigger,
+        },
+        {
+          title: "Active devices",
+          NormalComponent: SecurityActiveDevices,
         },
       ]}
     />

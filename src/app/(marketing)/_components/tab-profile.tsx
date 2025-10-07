@@ -4,6 +4,7 @@ import {
   ProfileNameUpdateForm,
   ProfileNameUpdateTrigger,
 } from "./profile-name-update-form";
+import ProfileConnectSocials from "./profile-connect-socials";
 
 export default function TabProfile() {
   return (
@@ -14,6 +15,10 @@ export default function TabProfile() {
           title: "Profile",
           FormComponent: ProfileNameUpdateForm,
           TriggerComponent: ProfileNameUpdateTrigger,
+        },
+        {
+          title: "Connect accounts",
+          NormalComponent: ProfileConnectSocials,
         },
       ]}
     />
