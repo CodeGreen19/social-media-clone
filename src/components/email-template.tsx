@@ -45,11 +45,13 @@ function WelcomeEmail({ firstName }: WelcomeEmailType) {
 type ChangeEmailNotificationType = {
   firstName: string;
   newEmail: string;
+  url: string;
 };
 
 function ChangeEmailNotification({
   firstName,
   newEmail,
+  url,
 }: ChangeEmailNotificationType) {
   return (
     <div
@@ -72,11 +74,26 @@ function ChangeEmailNotification({
         <h1 style={{ fontSize: "20px", marginBottom: "16px" }}>
           Your Email Address Has Been Updated
         </h1>
+
         <p style={{ fontSize: "16px", lineHeight: "24px" }}>
           Hi {firstName}, <br />
           We wanted to let you know that your email has been successfully
           changed to <strong>{newEmail}</strong>.
         </p>
+        <a
+          href={url}
+          style={{
+            display: "inline-block",
+            marginTop: "16px",
+            padding: "12px 20px",
+            backgroundColor: "#16a34a",
+            color: "#ffffff",
+            borderRadius: "6px",
+            textDecoration: "none",
+          }}
+        >
+          Verify its you
+        </a>
         <p style={{ marginTop: "16px", fontSize: "16px" }}>
           If you didn’t make this change, please contact our support team
           immediately to secure your account.

@@ -1,10 +1,10 @@
-import React from "react";
-import { SectionLayoutWrapper } from "./section-layout-wrapper";
+import { ChangeEmailForm, ChangeEmailTrigger } from "./profile-change-email";
+import ProfileConnectSocials from "./profile-connect-socials";
 import {
   ProfileNameUpdateForm,
   ProfileNameUpdateTrigger,
 } from "./profile-name-update-form";
-import ProfileConnectSocials from "./profile-connect-socials";
+import { SectionLayoutWrapper } from "./section-layout-wrapper";
 
 export default function TabProfile() {
   return (
@@ -19,6 +19,11 @@ export default function TabProfile() {
         {
           title: "Connect accounts",
           NormalComponent: ProfileConnectSocials,
+        },
+        {
+          title: "Change Email",
+          FormComponent: ChangeEmailForm,
+          TriggerComponent: ChangeEmailTrigger,
         },
       ]}
     />

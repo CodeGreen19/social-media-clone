@@ -1,7 +1,11 @@
 import { db } from "@/drizzle/db";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { sendResetPassword, sendVerficationEmail } from "./send-email";
+import {
+  sendChangeEmail,
+  sendResetPassword,
+  sendVerficationEmail,
+} from "./send-email";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -20,6 +24,18 @@ export const auth = betterAuth({
   account: {
     accountLinking: {
       enabled: true,
+    },
+  },
+  user: {
+    changeEmail: {
+      enabled: true,
+      async sendChangeEmailVerification(data) {
+        await sendChangeEmail({
+          firstName: data.user.name,
+          newEmail: data.newEmail,
+          url: data.url,
+        });
+      },
     },
   },
   emailAndPassword: {
