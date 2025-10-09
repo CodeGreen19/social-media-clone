@@ -3,14 +3,28 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import {
   sendChangeEmail,
+  sendOTPVerficationEmail,
   sendResetPassword,
   sendVerficationEmail,
 } from "./send-email";
+import { twoFactor } from "better-auth/plugins";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
   }),
+  appName: "Glimps",
+  plugins: [
+    twoFactor({
+      skipVerificationOnEnable: true,
+      otpOptions: {
+        async sendOTP({ user, otp }) {
+          await sendOTPVerficationEmail({ firstName: user.name, otp });
+        },
+      },
+    }),
+  ],
+
   socialProviders: {
     github: {
       clientId: process.env.GITHUB_CLIENT_ID as string,
