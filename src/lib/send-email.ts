@@ -7,6 +7,8 @@ import {
   ChangeEmailNotificationType,
   EmailVerificationEmail,
   EmailVerificationEmailType,
+  OTPVerificationEmail,
+  OTPVerificationType,
   ResetPasswordEmail,
   ResetPasswordEmailType,
   WelcomeEmail,
@@ -67,6 +69,20 @@ export const sendResetPassword = async (input: ResetPasswordEmailType) => {
     to: ["codegreen19s@gmail.com"],
     subject: "Reset your password",
     react: ResetPasswordEmail(input),
+  });
+  if (error) {
+    return { success: false };
+  }
+  if (data) {
+    return { success: true };
+  }
+};
+export const sendOTPVerficationEmail = async (input: OTPVerificationType) => {
+  const { data, error } = await resend.emails.send({
+    from: "Acme <onboarding@resend.dev>",
+    to: ["codegreen19s@gmail.com"],
+    subject: "OTP Verfication",
+    react: OTPVerificationEmail(input),
   });
   if (error) {
     return { success: false };

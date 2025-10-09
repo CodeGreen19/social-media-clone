@@ -26,6 +26,9 @@ import { useRouter } from "next/navigation";
 //
 const passwordSchema = z
   .object({
+    currentPassword: z
+      .string()
+      .min(6, "Password must be at least 6 characters long"),
     newPassword: z
       .string()
       .min(6, "Password must be at least 6 characters long"),
@@ -47,6 +50,7 @@ function SecurityUPdatePasswordForm({ onClose }: AccountSectionTriggers) {
   const form = useForm<PasswordSchemaType>({
     resolver: zodResolver(passwordSchema),
     defaultValues: {
+      currentPassword: "",
       newPassword: "",
       confirmPassword: "",
       logoutAll: false,
@@ -59,7 +63,7 @@ function SecurityUPdatePasswordForm({ onClose }: AccountSectionTriggers) {
     try {
       // 🔐 Update password through your auth client (customize this)
       const result = await authClient.changePassword({
-        currentPassword: "passcode",
+        currentPassword: values.currentPassword,
         newPassword: values.newPassword,
         revokeOtherSessions: values.logoutAll,
       });
@@ -81,6 +85,21 @@ function SecurityUPdatePasswordForm({ onClose }: AccountSectionTriggers) {
     <div className="space-y-4">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="currentPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Current Password</FormLabel>
+                <Input
+                  type="text"
+                  placeholder="Enter new password"
+                  {...field}
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="newPassword"

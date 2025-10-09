@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import UserButton from "./_components/user-button";
+import { User } from "better-auth";
 
 export default function page() {
   const router = useRouter();
@@ -32,6 +33,7 @@ export default function page() {
   }, [isTokenVerficationError, router]);
   return (
     <div>
+      <EmailNotVerifiedBox user={data?.user} />
       <div className="border-b">
         <nav className="h-20 border-b flex items-center justify-between px-6 lg:px-0 max-w-2xl m-auto">
           <Logo className="size-10" />
@@ -64,6 +66,37 @@ export default function page() {
       <div className="flex items-center justify-center mt-6">
         <UserButton />
       </div>
+    </div>
+  );
+}
+
+function EmailNotVerifiedBox({ user }: { user: User | undefined }) {
+  const { isPending, mutate } = useMutation({
+    mutationFn: () =>
+      authClient.sendVerificationEmail({
+        email: user?.email || "",
+      }),
+    onSuccess: ({ data }) => {
+      if (data?.status) {
+        toast.info("a verification link has sent to your email");
+      }
+    },
+  });
+
+  if (!user || user.emailVerified) {
+    return null;
+  }
+  return (
+    <div className=" border-b text-yellow-500 py-1 flex items-center justify-center gap-2">
+      New email not verified{" "}
+      <Button
+        disabled={isPending}
+        onClick={() => mutate()}
+        variant={"outline"}
+        className="text-yellow-500"
+      >
+        Verify
+      </Button>
     </div>
   );
 }

@@ -11,10 +11,13 @@ type SectionTriggerComponentType =
   ({}: AccountSectionTriggers) => React.JSX.Element;
 type SectionFormComponentType =
   ({}: AccountSectionTriggers) => React.JSX.Element;
+type SectionNormalComponentType = () => React.JSX.Element;
+
 type SectionComponentType = {
   title: string;
-  FormComponent: SectionFormComponentType;
-  TriggerComponent: SectionTriggerComponentType;
+  FormComponent?: SectionFormComponentType;
+  TriggerComponent?: SectionTriggerComponentType;
+  NormalComponent?: SectionNormalComponentType;
 };
 type SectionInfoType = {
   heading: string;
@@ -26,25 +29,31 @@ function SectionLayoutWrapper({ heading, sections }: SectionInfoType) {
     <div className="space-y-4">
       <h1 className="font-medium">{heading}</h1>
 
-      {sections.map((section) => (
-        <Fragment key={section.title}>
-          <Separator />
-          <div className="md:grid md:grid-cols-[1fr_1.8fr] space-y-2 md:space-y-0">
-            <h2>{section.title}</h2>
-            <ClickExpandActionBox
-              FormComponent={section.FormComponent}
-              TriggerComponent={section.TriggerComponent}
-            />
-          </div>
-        </Fragment>
-      ))}
+      {sections.map(
+        ({ title, FormComponent, NormalComponent, TriggerComponent }) => (
+          <Fragment key={title}>
+            <Separator />
+            <div className="md:grid md:grid-cols-[1fr_1.8fr] space-y-2 md:space-y-0">
+              <h2>{title}</h2>
+              {FormComponent && TriggerComponent ? (
+                <ClickExpandActionBox
+                  FormComponent={FormComponent}
+                  TriggerComponent={TriggerComponent}
+                />
+              ) : NormalComponent ? (
+                <NormalComponent />
+              ) : null}
+            </div>
+          </Fragment>
+        )
+      )}
     </div>
   );
 }
 function ClickExpandActionBox({
   FormComponent,
   TriggerComponent,
-}: Pick<SectionComponentType, "FormComponent" | "TriggerComponent">) {
+}: Required<Pick<SectionComponentType, "FormComponent" | "TriggerComponent">>) {
   const [open, setOpen] = useState(false);
   return (
     <Fragment>
