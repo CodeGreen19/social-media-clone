@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "db:studio": "bunx drizzle-kit studio",
-    "db:push": "bunx drizzle-kit push"
+    "db:push": "bunx drizzle-kit push",
+    "db:generate": "npx @better-auth/cli generate"
+
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

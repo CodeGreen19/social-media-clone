@@ -20,8 +20,13 @@ import { useMutation } from "@tanstack/react-query";
 import { User } from "better-auth";
 import { Dispatch, SetStateAction, useState } from "react";
 import UserManagement from "./user-management";
+import { useRouter } from "next/navigation";
 
-export default function UserButton() {
+export default function UserButton({
+  dropDownAlign,
+}: {
+  dropDownAlign?: "start" | "center" | "end";
+}) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { data, isPending } = authClient.useSession();
 
@@ -38,9 +43,10 @@ export default function UserButton() {
           open={dropdownOpen}
           setOpen={setDropdownOpen}
           user={data.user}
+          dropDownAlign={dropDownAlign}
         />
         <DialogTitle className="sr-only" />
-        <DialogContent className="h-[95vh] p-0 overflow-hidden !max-w-[calc(100%-2rem)] md:!max-w-4xl overflow-y-auto bg-card">
+        <DialogContent className="h-[95vh] p-0 overflow-hidden !max-w-[calc(100%-2rem)] md:!max-w-4xl  bg-card ">
           <UserManagement />
         </DialogContent>
       </Dialog>
@@ -53,24 +59,33 @@ type ProfileButtonTriggerBox = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   user: User;
+  dropDownAlign?: "start" | "center" | "end";
 };
 function ProfileButtonTriggerBox({
   open,
   setOpen,
   user,
+  dropDownAlign,
 }: ProfileButtonTriggerBox) {
+  const router = useRouter();
   const { mutate, isPending: logoutPending } = useMutation({
     mutationFn: () => authClient.signOut(),
+    onSuccess: () => {
+      router.refresh();
+    },
   });
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Avatar>
           <AvatarImage src={user.image ?? ""} />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="center" className="p-4 space-y-2">
+      <DropdownMenuContent
+        align={dropDownAlign ?? "center"}
+        className="p-4 space-y-2"
+      >
         <div className="flex items-center gap-2">
           <Avatar>
             <AvatarImage src={user.image ?? ""} />

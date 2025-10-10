@@ -53,7 +53,7 @@ export default function UserManagement() {
           ))}
         </div>
       </section>
-      <section className="bg-background grow rounded-lg p-6">
+      <section className="bg-background grow rounded-lg p-6 overflow-y-auto">
         {tab === "Profile" ? (
           <TabProfile />
         ) : tab === "Security" ? (

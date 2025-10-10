@@ -40,7 +40,18 @@ export default function SigninForm() {
       router.push("/");
     }
     if (result.error) {
+      console.log(result.error);
+
       if (result.error.status === 403) {
+        if (result.error.statusText) {
+          return toast.error(result.error.message || result.error.statusText, {
+            style: {
+              backgroundColor: "#fba4a454",
+              color: "red",
+              border: "none",
+            },
+          });
+        }
         form.reset();
         return toast.success("We have sent a verification email");
       }

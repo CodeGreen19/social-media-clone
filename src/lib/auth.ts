@@ -7,7 +7,7 @@ import {
   sendResetPassword,
   sendVerficationEmail,
 } from "./send-email";
-import { twoFactor } from "better-auth/plugins";
+import { twoFactor, admin } from "better-auth/plugins";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -23,6 +23,7 @@ export const auth = betterAuth({
         },
       },
     }),
+    admin(),
   ],
 
   socialProviders: {
