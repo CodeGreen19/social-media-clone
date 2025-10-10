@@ -41,6 +41,9 @@ export default function Page() {
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold mb-6">Users</h1>
         <div className="space-x-2">
+          <Link href={"/dashboard/permissions"}>
+            <Button>Permission</Button>
+          </Link>
           <Link href={"/dashboard/update"}>
             <Button>Update</Button>
           </Link>
